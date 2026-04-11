@@ -1,12 +1,15 @@
 package modelo.dao;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import modelo.entities.Cliente;
 
 
-
 public class ClienteDaoImplMy8Jpa extends AbstractDaoImpl implements ClienteDao {
+	
+	public ClienteDaoImplMy8Jpa() {
+
+	}
 
 	@Override
 	public int alta(Cliente cliente) {
@@ -22,33 +25,34 @@ public class ClienteDaoImplMy8Jpa extends AbstractDaoImpl implements ClienteDao 
 			return 0;
 		}
 	}
-	
 
 	@Override
-	public Cliente buscarUno(String cif) {
-
-		return em.find(Cliente.class, cif);
+	public int modificar(Cliente cliente) {
+		if(buscarUno(cliente.getCif()) != null) {
+			
+			try {
+				tx.begin();
+					em.merge(cliente);
+				tx.commit();
+				return 1;
+			}catch (Exception e) {
+				System.out.println("Error en modificar Cliente: " + e.getMessage());
+				return -1;
+			}
+		} else 
+			return 0;
 	}
 
 	@Override
-	public List<Cliente> findAll() {
-		jpql = "from Cliente c";
-		query = em.createQuery(jpql);
-		
-		return query.getResultList();
-	}
-
-	@Override
-	public int eliminar(String cif) {
-		Cliente cliente = buscarUno(cif);
-		if(buscarUno(cif) != null) {
+	public int eliminar(String atributoId) {
+		Cliente cliente = buscarUno(atributoId);
+		if(buscarUno(atributoId) != null) {
 			
 			try {
 				tx.begin();
 					em.remove(cliente);
 				tx.commit();
 				return 1;
-				
 			}catch (Exception e) {
 				System.out.println("Error en eliminar Cliente: " + e.getMessage());
 				return -1;
@@ -56,6 +60,21 @@ public class ClienteDaoImplMy8Jpa extends AbstractDaoImpl implements ClienteDao 
 		} else 
 			return 0;
 	}
-    
+
+	@Override
+	public Cliente buscarUno(String atributoId) {
+		return em.find(Cliente.class, atributoId);
+	}
+
+	@Override
+	public List<Cliente> buscarTodos() {
+		jpql = "from Cliente r";
+		query = em.createQuery(jpql);
+		
+		return query.getResultList();
+	}
+
+	
+
  
 }
