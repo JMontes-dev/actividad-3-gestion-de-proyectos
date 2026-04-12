@@ -25,7 +25,7 @@ public class TestDepartamentoDao {
 	}
 	
 	private static void alta() {
-		System.out.println("=== ALTA ===");
+		System.out.println("\n=== ALTA ===");
 		
 		Departamento dep = new Departamento(50, "Marketing", "Sevilla");
 		Departamento dep2 = new Departamento(60, "Legal", "Sevilla");
@@ -39,6 +39,8 @@ public class TestDepartamentoDao {
 	}
 	
 	private static void modificar() {
+		System.out.println("\n=== MODIFICAR ===");
+		
 		 Departamento entity = dao.buscarUno(60);
 		 entity.setNombre("Diseño");
 		 
@@ -47,7 +49,7 @@ public class TestDepartamentoDao {
 	}
 	
 	private static void eliminar() {
-		System.out.println("=== ELIMINAR ===");
+		System.out.println("\n=== ELIMINAR ===");
 	
 		switch(dao.eliminar(50)) {
 		case 1: System.out.println("Eliminado Correctamente"); 
@@ -61,13 +63,13 @@ public class TestDepartamentoDao {
 	}
 
 	private static void uno() {
-		System.out.println("=== UNO ===");
+		System.out.println("\n=== UNO ===");
 		
 		System.out.println(dao.buscarUno(60));
 	}
 
 	private static void todos() {
-		System.out.println("=== TODOS ===");
+		System.out.println("\n=== TODOS ===");
 		
 		for (Departamento ele: dao.buscarTodos())
 			System.out.println(ele);
