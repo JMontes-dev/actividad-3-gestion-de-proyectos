@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -13,12 +15,14 @@ public class Perfil {
 	
 	@Id
 	@Column(name="ID_PERFIL")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int perfilId;
 	
 	private String nombre;
 	
 	@Column(name="TASA_STANDARD")
 	private double tasaStandard;
+
 
 	public Perfil(int perfilId, String nombre, double tasaStandard) {
 		super();

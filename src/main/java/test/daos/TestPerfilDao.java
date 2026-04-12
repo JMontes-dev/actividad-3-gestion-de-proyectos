@@ -25,22 +25,24 @@ public class TestPerfilDao {
 	}
 	
 	private static void alta() {
-		System.out.println("=== ALTA ===");
+		System.out.println("\n=== ALTA ===");
 		
-		Perfil perf = new Perfil(5, "QA Tester", 110);
-		Perfil perf2 = new Perfil(6, "Administrativo", 90);
+		Perfil perf = new Perfil(0, "QA Tester", 110);
+		Perfil perf2 = new Perfil(0, "Administrativo", 90);
 		
 	    System.out.println(dao.alta(perf));
 	    System.out.println(dao.alta(perf2));
 	    
-	    System.out.println(dao.buscarUno(5));
 	    System.out.println(dao.buscarUno(6));
+	    System.out.println(dao.buscarUno(7));
 		
 	}
 	
 	private static void modificar() {
+		System.out.println("\n=== MODIFICAR ===");
+		
 		 Perfil entity = dao.buscarUno(6);
-		 entity.setNombre("Consultor");
+		 entity.setTasaStandard(80);
 		 
 		 System.out.println(dao.buscarUno(6));
 		 System.out.println(dao.modificar(entity));
@@ -48,7 +50,7 @@ public class TestPerfilDao {
 	}
 	
 	private static void eliminar() {
-		System.out.println("=== ELIMINAR ===");
+		System.out.println("\n=== ELIMINAR ===");
 	
 		switch(dao.eliminar(5)) {
 		case 1: System.out.println("Eliminado Correctamente"); 
@@ -62,13 +64,13 @@ public class TestPerfilDao {
 	}
 
 	private static void uno() {
-		System.out.println("=== UNO ===");
+		System.out.println("\n=== UNO ===");
 		
 		System.out.println(dao.buscarUno(4));
 	}
 
 	private static void todos() {
-		System.out.println("=== TODOS ===");
+		System.out.println("\n=== TODOS ===");
 		
 		for (Perfil ele: dao.buscarTodos())
 			System.out.println(ele);

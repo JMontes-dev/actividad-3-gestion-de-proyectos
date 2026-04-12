@@ -65,10 +65,56 @@ public class EmpleadoDaoImplMy8Jpa extends AbstractDaoImpl implements EmpleadoDa
 
 	@Override
 	public List<Empleado> buscarTodos() {
-		jpql = "from Empleado r";
+		jpql = "from Empleado e";
 		query = em.createQuery(jpql);
 		
 		return query.getResultList();
+	}
+
+	@Override
+	public List<Empleado> empleadosByDepartamento(int IdDepar) {
+		jpql = "from Empleado e where e.departamento.departamentoId = :dep";
+		
+		query = em.createQuery(jpql);
+		query.setParameter("dep" , IdDepar);
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Empleado> empleadosByGenero(char sexo) {
+		jpql = "from Empleado e where e.genero = :gen";
+		
+		query = em.createQuery(jpql);
+		query.setParameter("gen" , sexo);
+		return query.getResultList();
+	}
+
+
+	@Override
+	public List<Empleado> empleadosByApellido(String subcadena) {
+		jpql = "from Empleado e where e.apellidos = :apell";
+		
+		query = em.createQuery(jpql);
+		query.setParameter("apell" , subcadena);
+		return query.getResultList();
+	}
+
+
+	@Override
+	public double salarioTotal() {
+		jpql = "SELECT SUM(e.salario) from Empleado e";
+		query = em.createQuery(jpql);
+		
+		return (double) query.getSingleResult();
+	}
+
+	@Override
+	public double salarioTotal(int idDepar) {
+		jpql = "SELECT SUM(e.salario) from Empleado e where e.departamento.departamentoId = :depar";
+		
+		query = em.createQuery(jpql);
+		query.setParameter("depar" , idDepar);
+		return (double) query.getSingleResult();
 	}
 
 
