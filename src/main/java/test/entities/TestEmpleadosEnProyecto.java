@@ -1,31 +1,29 @@
 package test.entities;
 
-import modelo.entities.Empleado;
-import modelo.entities.EmpleadosEnProyecto;
-import modelo.entities.Perfil;
+import modelo.dao.EmpleadosEnProyectoDao;
+import modelo.dao.EmpleadosEnProyectoDaoImplMy8Jpa;
 
 public class TestEmpleadosEnProyecto {
 	
+	private static EmpleadosEnProyectoDao eepDao;
+	
+	static {
+		eepDao = new EmpleadosEnProyectoDaoImplMy8Jpa();
+	}
+
+	
 	public static void main(String[] args) {
         
-        Perfil senior = new Perfil();
-        senior.setTasaStandard(50.0); 
 
-        Empleado emp = new Empleado();
-        emp.setPerfil(senior);
-
-        EmpleadosEnProyecto asignacion = new EmpleadosEnProyecto();
-        asignacion.setEmpleado(emp);
-        asignacion.setHorasAsignadas(10); 
-
+		costeHorasAsignadas();
         
-        double resultado = asignacion.costeHorasAsignadas();
+	}
 
-        
-        System.out.println("--- TEST : EmpleadosEnProyecto ---");
-        
-        System.out.println("Resultado: " + resultado + "€");
 
+	private static void costeHorasAsignadas() {     
+        System.out.println("\n=== COSTE HORAS ASIGNADAS ===");
         
+        System.out.println(eepDao.buscarUno(1).costeHorasAsignadas());
+		
 	}
 }

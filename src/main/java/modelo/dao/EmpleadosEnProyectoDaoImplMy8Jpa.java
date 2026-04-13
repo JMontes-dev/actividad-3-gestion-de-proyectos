@@ -4,62 +4,73 @@ import java.util.List;
 import jakarta.persistence.TypedQuery;
 import modelo.entities.Empleado;
 import modelo.entities.EmpleadosEnProyecto;
+import modelo.entities.Proyecto;
 
 public class EmpleadosEnProyectoDaoImplMy8Jpa extends AbstractDaoImpl implements EmpleadosEnProyectoDao {
 
-    @Override
-    public List<EmpleadosEnProyecto> findAll() {
-        return em.createQuery("SELECT ee FROM EmpleadosEnProyecto ee", EmpleadosEnProyecto.class)
-                 .getResultList();
-    }
+	@Override
+	public int alta(EmpleadosEnProyecto entity) {
+		try {
+			tx.begin();
+				em.persist(entity);
+			tx.commit();
+			
+			return 1;
+			
+		} catch (Exception e) {
+			System.out.println("Error en dar de alta Empleado en Proyecto: " + e.getMessage());
+			return 0;
+		}
+	}
 
-    @Override
-    public EmpleadosEnProyecto findById(int id) {
-        return em.find(EmpleadosEnProyecto.class, id);
-    }
+	@Override
+	public int modificar(EmpleadosEnProyecto entity) {
+		if(buscarUno(entity.getId()) != null) {
+			
+			try {
+				tx.begin();
+					em.merge(entity);
+				tx.commit();
+				return 1;
+			}catch (Exception e) {
+				System.out.println("Error en modificar Empleado en Proyecto: " + e.getMessage());
+				return -1;
+			}
+		} else 
+			return 0;
+	}
+	@Override
+	public int eliminar(Integer atributoId) {
+		EmpleadosEnProyecto entity = buscarUno(atributoId);
+		if(buscarUno(atributoId) != null) {
+			
+			try {
+				tx.begin();
+					em.remove(entity);
+				tx.commit();
+				return 1;
+			}catch (Exception e) {
+				System.out.println("Error en eliminar Empleado en Proyecto: " + e.getMessage());
+				return -1;
+			}
+		} else 
+			return 0;
+	}
 
-    @Override
-    public boolean create(EmpleadosEnProyecto ee) {
-        try {
-            tx.begin();
-            em.persist(ee);
-            tx.commit();
-            return true;
-        } catch (Exception e) {
-            tx.rollback();
-            return false;
-        }
-    }
+	@Override
+	public EmpleadosEnProyecto buscarUno(Integer atributoId) {
+		return em.find(EmpleadosEnProyecto.class, atributoId);
+	}
 
-    @Override
-    public boolean update(EmpleadosEnProyecto ee) {
-        try {
-            tx.begin();
-            em.merge(ee);
-            tx.commit();
-            return true;
-        } catch (Exception e) {
-            tx.rollback();
-            return false;
-        }
-    }
-
-    @Override
-    public boolean delete(int id) {
-        try {
-            EmpleadosEnProyecto ee = findById(id);
-            if (ee != null) {
-                tx.begin();
-                em.remove(ee);
-                tx.commit();
-                return true;
-            }
-        } catch (Exception e) {
-            tx.rollback();
-        }
-        return false;
-    }
-
+	@Override
+	public List<EmpleadosEnProyecto> buscarTodos() {
+		jpql = "from EmpleadosEnProyecto ep";
+		query = em.createQuery(jpql);
+		
+		return query.getResultList();
+	}
+	
+	
     @Override
     public List<Empleado> empleadosByProyecto(String idProyecto) {
         String jpql = "SELECT ee.empleado FROM EmpleadosEnProyecto ee WHERE ee.proyecto.proyectoId = :id";
@@ -105,4 +116,16 @@ public class EmpleadosEnProyectoDaoImplMy8Jpa extends AbstractDaoImpl implements
         }
         return total;
     }
+
+    
+	@Override
+	public List<EmpleadosEnProyecto> detalleEmpleadosProyecto(String idProyecto) {
+		
+		String jpql = "SELECT eep FROM EmpleadosEnProyecto eep WHERE eep.proyecto.proyectoId = :idProyecto";
+		
+		return em.createQuery(jpql, EmpleadosEnProyecto.class)
+				.setParameter("idProyecto", idProyecto)
+				.getResultList();
+	}
+
 }

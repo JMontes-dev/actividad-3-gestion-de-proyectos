@@ -3,21 +3,20 @@ package modelo.dao;
 import java.util.List;
 import modelo.entities.Empleado;
 import modelo.entities.EmpleadosEnProyecto;
+import modelo.entities.Proyecto;
 
 
-public interface EmpleadosEnProyectoDao {
+public interface EmpleadosEnProyectoDao extends GenericoDao<EmpleadosEnProyecto, Integer> {
 	
-	boolean create(EmpleadosEnProyecto ee);
-    boolean update(EmpleadosEnProyecto ee);
-    boolean delete(int id);
-    EmpleadosEnProyecto findById(int id);
-    List<EmpleadosEnProyecto> findAll();
-    
-    List<Empleado> empleadosByProyecto(String idProyecto);
-    int asignarEmpleadosAProyecto(List<EmpleadosEnProyecto> empleados);
-    int horasAsignadasAProyecto(String idProyecto);
-    double costeActualDeEmpleadosEnProyecto(String idProyecto);
-    
   
+    List<Empleado> empleadosByProyecto(String idProyecto);
+    
+    int asignarEmpleadosAProyecto(List<EmpleadosEnProyecto> empleados);
+    
+    int horasAsignadasAProyecto(String idProyecto);
+    
+    double costeActualDeEmpleadosEnProyecto(String idProyecto);
 
+    //Método extra usado en imprimirGastos
+    List<EmpleadosEnProyecto> detalleEmpleadosProyecto(String idProyecto);
 }
